@@ -8,11 +8,14 @@ const cors = require("cors");
 const productRoutes = require("./routes/product");
 const { createProducts } = require("./controllers/product");
 mongoose
-  .connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  })
+  .connect(
+    "mongodb+srv://singh:K7nhMHqTfUSt7IDN@cluster0.bgnl4.mongodb.net/sconti",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    }
+  )
   .then(() => {
     console.log("DB CONNECTED");
   });
