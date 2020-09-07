@@ -49,6 +49,7 @@ const productSchema = new mongoose.Schema(
       },
     ],*/
     photo: String,
+    endDateTime: Date,
   },
   { timestamps: true }
 );

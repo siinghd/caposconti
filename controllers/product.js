@@ -21,7 +21,7 @@ exports.getProduct = (req, res) => {
 
 exports.createProducts = () => {
   var now = new Date();
-  var delay = 60 * 60 * 3000; // 1 hour in msec
+  var delay = 60 * 60 * 1000; // 1 hour in msec
   var start =
     delay -
     (now.getMinutes() * 60 + now.getSeconds()) * 1000 +
@@ -58,6 +58,7 @@ exports.createProducts = () => {
               discountprice: item.deal_price.value,
               price: item.list_price.value,
               asin: item.asin,
+              endDateTime: item.ends_at,
               amazonLink: item.link,
               amazonLinkOur: item.link + "/?tag=dealsdstg-21",
             };
@@ -82,6 +83,7 @@ exports.createProducts = () => {
         // catch and print the error
         console.log(error);
       });
+    console.log("requesting");
     setTimeout(doSomething, delay);
   }, start);
 };
