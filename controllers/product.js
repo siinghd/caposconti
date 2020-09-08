@@ -15,16 +15,18 @@ exports.getProductById = (req, res, next, id) => {
   });
 };
 exports.getProductByCategory = (req, res, next, id) => {
-  Product.find({ category: id }).exec((err, product) => {
-    if (err) {
-      console.log(err);
-      return res.status(400).json({
-        error: "Product not found",
-      });
+  Product.find({ category: { $regex: id, $options: "i" } }).exec(
+    (err, product) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).json({
+          error: "Product not found",
+        });
+      }
+      req.product = product;
+      next();
     }
-    req.product = product;
-    next();
-  });
+  );
 };
 exports.getProductsByCate = (req, res) => {
   return res.json(req.product);
