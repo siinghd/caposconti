@@ -19,6 +19,58 @@ exports.getProduct = (req, res) => {
   return res.json(req.product);
 };
 
+const fetchData = (prodottiInDb) => {
+  let found = false;
+  // set up the request parameters
+  const params = {
+    api_key: "D34E7BC79682412E9B4399DE53688B3E",
+    type: "deals",
+    url: "https://www.amazon.it/gp/goldbox",
+  };
+
+  // make the http GET request to Rainforest API
+  axios
+    .get("https://api.rainforestapi.com/request", { params })
+    .then((response) => {
+      // print the JSON response from Rainforest API
+      response.data.deals_results.forEach((item, index) => {
+        found = false;
+        if (item.list_price) {
+          var product = {
+            name: item.title,
+            description: item.description,
+            photo: item.image,
+            discountprice: item.deal_price.value,
+            price: item.list_price.value,
+            asin: item.asin,
+            endDateTime: item.ends_at,
+            amazonLink: item.link,
+            amazonLinkOur: item.link + "/?tag=dealsdstg-21",
+          };
+          prodottiInDb.forEach((dbproduct) => {
+            if (dbproduct.asin === item.asin) {
+              found = true;
+            }
+          });
+          console.log(found);
+          if (!found) {
+            let prodotto = new Product(product);
+            prodotto.save((err, prodotto) => {
+              if (err) {
+                console.log(err);
+              }
+              console.log("saved");
+            });
+          }
+        }
+      });
+    })
+    .catch((error) => {
+      // catch and print the error
+      console.log(error);
+    });
+};
+
 exports.createProducts = () => {
   var now = new Date();
   var delay = 60 * 60 * 1000; // 1 hour in msec
@@ -29,60 +81,35 @@ exports.createProducts = () => {
 
   setTimeout(function doSomething() {
     let prodottiInDb = [];
+    let asinRemove = [];
     Product.find().exec((err, products) => {
       if (err) {
         return "error";
       }
       prodottiInDb = products;
-    });
-    let found = false;
-    // set up the request parameters
-    const params = {
-      api_key: "D34E7BC79682412E9B4399DE53688B3E",
-      type: "deals",
-      url: "https://www.amazon.it/gp/goldbox",
-    };
-
-    // make the http GET request to Rainforest API
-    axios
-      .get("https://api.rainforestapi.com/request", { params })
-      .then((response) => {
-        // print the JSON response from Rainforest API
-        response.data.deals_results.forEach((item, index) => {
-          found = false;
-          if (item.list_price) {
-            var product = {
-              name: item.title,
-              description: item.description,
-              photo: item.image,
-              discountprice: item.deal_price.value,
-              price: item.list_price.value,
-              asin: item.asin,
-              endDateTime: item.ends_at,
-              amazonLink: item.link,
-              amazonLinkOur: item.link + "/?tag=dealsdstg-21",
-            };
-            prodottiInDb.forEach((dbproduct) => {
-              if (dbproduct.asin === item.asin) {
-                found = true;
-              }
-            });
-            console.log(found);
-            if (!found) {
-              let prodotto = new Product(product);
-              prodotto.save((err, prodotto) => {
-                if (err) {
-                  console.log(err);
-                }
-              });
-            }
-          }
-        });
-      })
-      .catch((error) => {
-        // catch and print the error
-        console.log(error);
+      prodottiInDb.forEach((dbproduct) => {
+        if (now > dbproduct.endDateTime) {
+          asinRemove.push(dbproduct.asin);
+        }
       });
+
+      Product.deleteMany(
+        {
+          asin: {
+            $in: asinRemove,
+          },
+        },
+        (err) => {
+          if (err) {
+            fetchData(prodottiInDb);
+            console.log("error removing products");
+          } else {
+            fetchData(prodottiInDb);
+          }
+        }
+      );
+    });
+
     console.log("requesting");
     setTimeout(doSomething, delay);
   }, start);
