@@ -50,6 +50,7 @@ const productSchema = new mongoose.Schema(
     ],*/
     photo: String,
     endDateTime: Date,
+    category: String,
   },
   { timestamps: true }
 );
