@@ -5,6 +5,7 @@ const {
   getAllProducts,
   getProductByCategory,
   getProductsByCate,
+  getSearchedProducts,
 } = require("../controllers/product");
 var router = express.Router();
 
@@ -14,5 +15,6 @@ router.param("byCategory", getProductByCategory);
 router.get("/product/:productId", getProduct);
 router.get("/products/:byCategory", getProductsByCate);
 router.get("/products", getAllProducts);
+router.post("/search", getSearchedProducts);
 
 module.exports = router;

@@ -39,7 +39,7 @@ const fetchData = async (prodottiInDb, amazonLink, categoryOfLink) => {
   let found = false;
   // set up the request parameters
   const params = {
-    api_key: "D34E7BC79682412E9B4399DE53688B3E",
+    api_key: "38F0ED30C8BC4212B77CFFCB5D6A3FA7",
     type: "deals",
     url: amazonLink,
   };
@@ -61,7 +61,7 @@ const fetchData = async (prodottiInDb, amazonLink, categoryOfLink) => {
             asin: item.asin,
             endDateTime: item.ends_at,
             amazonLink: item.link,
-            amazonLinkOur: item.link + "/?tag=dealsdstg-21",
+            amazonLinkOur: item.link + "?tag=dealsdstg-21",
             category: categoryOfLink,
           };
           prodottiInDb.forEach((dbproduct) => {
@@ -234,4 +234,19 @@ exports.getAllProducts = (req, res) => {
       }
       res.json(products);
     });
+};
+exports.getSearchedProducts = (req, res) => {
+  Product.find({
+    $or: [
+      { name: { $regex: req.body.text, $options: "i" } },
+      { category: { $regex: req.body.text, $options: "i" } },
+    ],
+  }).exec((err, products) => {
+    if (err) {
+      return res.status(400).json({
+        error: "Product not found",
+      });
+    }
+    res.json(products);
+  });
 };
