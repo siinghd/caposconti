@@ -236,6 +236,7 @@ exports.getAllProducts = (req, res) => {
     });
 };
 exports.getSearchedProducts = (req, res) => {
+  console.log(req.body);
   Product.find({
     $or: [
       { name: { $regex: req.body.text, $options: "i" } },
