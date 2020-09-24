@@ -106,6 +106,7 @@ exports.createProducts = () => {
       prodottiInDb = products;
       prodottiInDb.forEach((dbproduct) => {
         if (now > dbproduct.endDateTime) {
+          console.log("adding removing products");
           asinRemove.push(dbproduct.asin);
         }
       });
@@ -165,6 +166,8 @@ exports.createProducts = () => {
             );
             console.log("error removing products");
           } else {
+            console.log("removing products");
+            console.log(asinRemove);
             fetchData(
               prodottiInDb,
               "https://www.amazon.it/gp/goldbox/ref=gbps_ftr_s-5_9fdc_wht_42591603?gb_f_deals1=sortOrder:BY_SCORE,enforcedCategories:425916031&pf_rd_p=e3352cfd-6885-47c5-8c7b-040f48979fdc&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=Y28WPBXS4KEB2SY5N16W&ie=UTF8&nocache=1599569942829",
