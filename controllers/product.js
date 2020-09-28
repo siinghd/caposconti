@@ -39,7 +39,7 @@ const fetchData = async (prodottiInDb, amazonLink, categoryOfLink) => {
   let found = false;
   // set up the request parameters
   const params = {
-    api_key: "38F0ED30C8BC4212B77CFFCB5D6A3FA7",
+    api_key: "282501F0C04C47678B86818C98F4DBF4",
     type: "deals",
     url: amazonLink,
   };
@@ -164,6 +164,11 @@ exports.createProducts = () => {
               "https://www.amazon.it/gp/goldbox/ref=gbps_fcr_s-5_9fdc_wht_15712890?gb_f_deals1=sortOrder:BY_SCORE,enforcedCategories:827181031&pf_rd_p=e3352cfd-6885-47c5-8c7b-040f48979fdc&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=WTEF9BTQTXPPDVXQJ47C&nocache=1599569942829&ie=UTF8",
               "DispositiviAmazon"
             );
+            fetchData(
+              prodottiInDb,
+              "https://www.amazon.it/gp/goldbox/ref=gbpp_itr_s-4_f9e9_TDLDS?&gb_f_deals1=dealTypes:LIGHTNING_DEAL&gb_ttl_deals1=Offerte%2520Lampo&ie=UTF8",
+              "offertelampo"
+            );
             console.log("error removing products");
           } else {
             console.log("removing products");
@@ -212,6 +217,11 @@ exports.createProducts = () => {
               prodottiInDb,
               "https://www.amazon.it/gp/goldbox/ref=gbps_fcr_s-5_9fdc_wht_15712890?gb_f_deals1=sortOrder:BY_SCORE,enforcedCategories:827181031&pf_rd_p=e3352cfd-6885-47c5-8c7b-040f48979fdc&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=WTEF9BTQTXPPDVXQJ47C&nocache=1599569942829&ie=UTF8",
               "DispositiviAmazon"
+            );
+            fetchData(
+              prodottiInDb,
+              "https://www.amazon.it/gp/goldbox/ref=gbpp_itr_s-4_f9e9_TDLDS?&gb_f_deals1=dealTypes:LIGHTNING_DEAL&gb_ttl_deals1=Offerte%2520Lampo&ie=UTF8",
+              "offertelampo"
             );
           }
         }
