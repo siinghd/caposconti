@@ -39,7 +39,7 @@ const fetchData = async (prodottiInDb, amazonLink, categoryOfLink) => {
   let found = false;
   // set up the request parameters
   const params = {
-    api_key: "282501F0C04C47678B86818C98F4DBF4",
+    api_key: "D34E7BC79682412E9B4399DE53688B3E",
     type: "deals",
     url: amazonLink,
   };
@@ -53,8 +53,10 @@ const fetchData = async (prodottiInDb, amazonLink, categoryOfLink) => {
         found = false;
         if (item.list_price) {
           var product = {
-            name: item.title,
-            description: item.description,
+            name: item.title ? item.title : "Product #" + index,
+            description: item.description
+              ? item.description
+              : "description #" + index,
             photo: item.image,
             discountprice: item.deal_price.value,
             price: item.list_price.value,
@@ -90,7 +92,7 @@ const fetchData = async (prodottiInDb, amazonLink, categoryOfLink) => {
 
 exports.createProducts = () => {
   var now = new Date();
-  var delay = 60 * 60 * 1000; // 1 hour in msec
+  var delay = 60 * 60 * 3000; // 1 hour in msec
   var start =
     delay -
     (now.getMinutes() * 60 + now.getSeconds()) * 1000 +
@@ -121,7 +123,7 @@ exports.createProducts = () => {
           if (err) {
             fetchData(
               prodottiInDb,
-              "https://www.amazon.it/gp/goldbox/ref=gbps_ftr_s-5_9fdc_wht_42591603?gb_f_deals1=sortOrder:BY_SCORE,enforcedCategories:425916031&pf_rd_p=e3352cfd-6885-47c5-8c7b-040f48979fdc&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=Y28WPBXS4KEB2SY5N16W&ie=UTF8&nocache=1599569942829",
+              "https://www.amazon.it/gp/goldbox/ref=gbps_ftr_s-5_5d03_wht_42591603?gb_f_deals1=dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL%252CEXPIRED%252CSOLDOUT,sortOrder:BY_SCORE,enforcedCategories:425916031&pf_rd_p=2a05bf1c-4cd5-4cf9-b4e9-085858ee5d03&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=HPZYM2Z6GVM4862STXT8&ie=UTF8",
               "Informatica"
             );
             fetchData(
@@ -163,11 +165,6 @@ exports.createProducts = () => {
               prodottiInDb,
               "https://www.amazon.it/gp/goldbox/ref=gbps_fcr_s-5_9fdc_wht_15712890?gb_f_deals1=sortOrder:BY_SCORE,enforcedCategories:827181031&pf_rd_p=e3352cfd-6885-47c5-8c7b-040f48979fdc&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=WTEF9BTQTXPPDVXQJ47C&nocache=1599569942829&ie=UTF8",
               "DispositiviAmazon"
-            );
-            fetchData(
-              prodottiInDb,
-              "https://www.amazon.it/gp/goldbox/ref=gbpp_itr_s-4_f9e9_TDLDS?&gb_f_deals1=dealTypes:LIGHTNING_DEAL&gb_ttl_deals1=Offerte%2520Lampo&ie=UTF8",
-              "offertelampo"
             );
             console.log("error removing products");
           } else {
@@ -175,7 +172,7 @@ exports.createProducts = () => {
             console.log(asinRemove);
             fetchData(
               prodottiInDb,
-              "https://www.amazon.it/gp/goldbox/ref=gbps_ftr_s-5_9fdc_wht_42591603?gb_f_deals1=sortOrder:BY_SCORE,enforcedCategories:425916031&pf_rd_p=e3352cfd-6885-47c5-8c7b-040f48979fdc&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=Y28WPBXS4KEB2SY5N16W&ie=UTF8&nocache=1599569942829",
+              "https://www.amazon.it/gp/goldbox/ref=gbps_ftr_s-5_5d03_wht_42591603?gb_f_deals1=dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL%252CEXPIRED%252CSOLDOUT,sortOrder:BY_SCORE,enforcedCategories:425916031&pf_rd_p=2a05bf1c-4cd5-4cf9-b4e9-085858ee5d03&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=HPZYM2Z6GVM4862STXT8&ie=UTF8",
               "Informatica"
             );
             fetchData(
@@ -217,11 +214,6 @@ exports.createProducts = () => {
               prodottiInDb,
               "https://www.amazon.it/gp/goldbox/ref=gbps_fcr_s-5_9fdc_wht_15712890?gb_f_deals1=sortOrder:BY_SCORE,enforcedCategories:827181031&pf_rd_p=e3352cfd-6885-47c5-8c7b-040f48979fdc&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=WTEF9BTQTXPPDVXQJ47C&nocache=1599569942829&ie=UTF8",
               "DispositiviAmazon"
-            );
-            fetchData(
-              prodottiInDb,
-              "https://www.amazon.it/gp/goldbox/ref=gbpp_itr_s-4_f9e9_TDLDS?&gb_f_deals1=dealTypes:LIGHTNING_DEAL&gb_ttl_deals1=Offerte%2520Lampo&ie=UTF8",
-              "offertelampo"
             );
           }
         }
