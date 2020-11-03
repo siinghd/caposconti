@@ -250,7 +250,6 @@ exports.getSearchedProducts = (req, res) => {
 exports.addProductsOfBot = (req, res) => {
   let records = JSON.parse(req.body.records);
   records.forEach((element, index) => {
-    console.log(element);
     let product = {
       Title: element.Title,
       Image: element.Image,
