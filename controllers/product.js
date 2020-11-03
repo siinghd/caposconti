@@ -250,6 +250,7 @@ exports.getSearchedProducts = (req, res) => {
 exports.addProductsOfBot = (req, res) => {
   let records = JSON.parse(req.body.records);
   records.forEach((element, index) => {
+    console.log(element);
     let product = {
       Title: element.Title,
       Image: element.image,
@@ -267,7 +268,8 @@ exports.addProductsOfBot = (req, res) => {
     let prodotto = new ProductBot(product);
     prodotto.save((err, prodotto) => {
       if (err) {
-        res.status(400).json({ err: "error" });
+        console.log(err);
+        return res.status(400).json({ err: "error" });
       }
       res.status(200).json({ done: "done" });
     });
