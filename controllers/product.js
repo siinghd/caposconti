@@ -111,7 +111,7 @@ exports.createProducts = () => {
         },
         (err) => {
           if (err) {
-            fetchData(
+            /*fetchData(
               prodottiInDb,
               "https://www.amazon.it/gp/goldbox/ref=gbps_ftr_s-5_5d03_wht_42591603?gb_f_deals1=dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL%252CEXPIRED%252CSOLDOUT,sortOrder:BY_SCORE,enforcedCategories:425916031&pf_rd_p=2a05bf1c-4cd5-4cf9-b4e9-085858ee5d03&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=HPZYM2Z6GVM4862STXT8&ie=UTF8",
               "Informatica"
@@ -155,10 +155,10 @@ exports.createProducts = () => {
               prodottiInDb,
               "https://www.amazon.it/gp/goldbox/ref=gbps_fcr_s-5_9fdc_wht_15712890?gb_f_deals1=sortOrder:BY_SCORE,enforcedCategories:827181031&pf_rd_p=e3352cfd-6885-47c5-8c7b-040f48979fdc&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=WTEF9BTQTXPPDVXQJ47C&nocache=1599569942829&ie=UTF8",
               "DispositiviAmazon"
-            );
+            );*/
             console.log("error removing products");
           } else {
-            console.log("removing products");
+            /* console.log("removing products");
             console.log(asinRemove);
             fetchData(
               prodottiInDb,
@@ -204,7 +204,7 @@ exports.createProducts = () => {
               prodottiInDb,
               "https://www.amazon.it/gp/goldbox/ref=gbps_fcr_s-5_9fdc_wht_15712890?gb_f_deals1=sortOrder:BY_SCORE,enforcedCategories:827181031&pf_rd_p=e3352cfd-6885-47c5-8c7b-040f48979fdc&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=WTEF9BTQTXPPDVXQJ47C&nocache=1599569942829&ie=UTF8",
               "DispositiviAmazon"
-            );
+            );*/
           }
         }
       );
@@ -248,9 +248,8 @@ exports.getSearchedProducts = (req, res) => {
 };
 
 exports.addProductsOfBot = (req, res) => {
-
-  req.body.records.forEach((element, index) => {
-       console.log(element);
+  let records = JSON.parse(req.body.records);
+  records.forEach((element, index) => {
     let product = {
       Title: element.Title,
       Image: element.image,
@@ -264,14 +263,12 @@ exports.addProductsOfBot = (req, res) => {
       Rating: element.Rating,
       OffertValue: element.OffertValue,
     };
-    console.log(product);
+
     let prodotto = new ProductBot(product);
     prodotto.save((err, prodotto) => {
       if (err) {
-        console.log(err);
         res.status(400).json("Error");
       }
-      console.log("ok");
       res.res.status(200).json("done");
     });
   });
