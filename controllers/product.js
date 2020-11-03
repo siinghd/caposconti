@@ -249,7 +249,7 @@ exports.getSearchedProducts = (req, res) => {
 
 exports.addProductsOfBot = (req, res) => {
   console.log(req.body.records, req.body.category);
-  req.body.records.forEach((element) => {
+  Object.entries(req.body.records).forEach((element) => {
     let product = {
       Title: element.Title,
       Image: element.image,
