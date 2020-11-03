@@ -267,9 +267,9 @@ exports.addProductsOfBot = (req, res) => {
     let prodotto = new ProductBot(product);
     prodotto.save((err, prodotto) => {
       if (err) {
-        res.status(400).json("Error");
+        res.status(400).json({ err: "error" });
       }
-      res.status(200).json("done");
+      res.status(200).json({ done: "done" });
     });
   });
 };
