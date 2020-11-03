@@ -269,7 +269,7 @@ exports.addProductsOfBot = (req, res) => {
       if (err) {
         res.status(400).json("Error");
       }
-      res.res.status(200).json("done");
+      res.status(200).json("done");
     });
   });
 };
