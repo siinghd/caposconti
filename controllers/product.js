@@ -263,6 +263,7 @@ exports.addProductsOfBot = (req, res) => {
       Rating: element.Rating,
       OffertValue: element.OffertValue,
     };
+    console.log(product);
     let prodotto = new ProductBot(product);
     prodotto.save((err, prodotto) => {
       if (err) {
