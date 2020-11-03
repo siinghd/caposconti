@@ -253,9 +253,9 @@ exports.addProductsOfBot = (req, res) => {
     console.log(element);
     let product = {
       Title: element.Title,
-      Image: element.image,
+      Image: element.Image,
       DealPrice: element.DealPrice,
-      Price: element.price,
+      Price: element.Price,
       Asin: element.Asin,
       TimeDeal: element.TimeDeal,
       Url: element.Url + "?tag=dealsdstg-21",
