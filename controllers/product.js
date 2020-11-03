@@ -248,7 +248,7 @@ exports.getSearchedProducts = (req, res) => {
 };
 
 exports.addProductsOfBot = (req, res) => {
-  console.log(req.body.records, req.body.category);
+
   Object.entries(req.body.records).forEach((element) => {
     let product = {
       Title: element.Title,
@@ -267,8 +267,10 @@ exports.addProductsOfBot = (req, res) => {
     let prodotto = new ProductBot(product);
     prodotto.save((err, prodotto) => {
       if (err) {
+        console.log(err);
         res.status(400).json("Error");
       }
+      console.log("ok");
       res.res.status(200).json("done");
     });
   });
