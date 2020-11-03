@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const ProductBot = require("../models/productsBot");
 const mongoose = require("mongoose");
 const axios = require("axios");
 
@@ -50,13 +51,10 @@ const fetchData = async (prodottiInDb, amazonLink, categoryOfLink) => {
     .then((response) => {
       // print the JSON response from Rainforest API
       response.data.deals_results.forEach((item, index) => {
-        found = false;
         if (item.list_price) {
-          var product = {
-            name: item.title ? item.title : "Product #" + index,
-            description: item.description
-              ? item.description
-              : "description #" + index,
+          let product = {
+            name: item.title,
+            description: item.description,
             photo: item.image,
             discountprice: item.deal_price.value,
             price: item.list_price.value,
@@ -66,21 +64,13 @@ const fetchData = async (prodottiInDb, amazonLink, categoryOfLink) => {
             amazonLinkOur: item.link + "?tag=dealsdstg-21",
             category: categoryOfLink,
           };
-          prodottiInDb.forEach((dbproduct) => {
-            if (dbproduct.asin === item.asin) {
-              found = true;
+          let prodotto = new Product(product);
+          prodotto.save((err, prodotto) => {
+            if (err) {
+              console.log(err);
             }
+            console.log("saved");
           });
-          console.log(found);
-          if (!found) {
-            let prodotto = new Product(product);
-            prodotto.save((err, prodotto) => {
-              if (err) {
-                console.log(err);
-              }
-              console.log("saved");
-            });
-          }
         }
       });
     })
@@ -92,7 +82,7 @@ const fetchData = async (prodottiInDb, amazonLink, categoryOfLink) => {
 
 exports.createProducts = () => {
   var now = new Date();
-  var delay = 60 * 60 * 3000; // 1 hour in msec
+  var delay = 1000; // 1 hour in msec
   var start =
     delay -
     (now.getMinutes() * 60 + now.getSeconds()) * 1000 +
@@ -221,7 +211,7 @@ exports.createProducts = () => {
     });
 
     console.log("requesting");
-    setTimeout(doSomething, delay);
+    //setTimeout(doSomething, delay);
   }, start);
 };
 
@@ -255,4 +245,78 @@ exports.getSearchedProducts = (req, res) => {
     }
     res.json(products);
   });
+};
+
+exports.addProductsOfBot = (req, res) => {
+  console.log(req.body.records, req.body.category);
+  req.body.records.forEach((element) => {
+    let product = {
+      Title: element.Title,
+      Image: element.image,
+      DealPrice: element.DealPrice,
+      Price: element.price,
+      Asin: element.Asin,
+      TimeDeal: element.TimeDeal,
+      Url: element.Url + "?tag=dealsdstg-21",
+      Category: req.body.category,
+      MerchantInfo: element.MerchantInfo,
+      Rating: element.Rating,
+      OffertValue: element.OffertValue,
+    };
+    let prodotto = new ProductBot(product);
+    prodotto.save((err, prodotto) => {
+      if (err) {
+        res.status(400).json("Error");
+      }
+      res.res.status(200).json("done");
+    });
+  });
+};
+exports.getSearchedProductsBot = (req, res) => {
+  console.log(req.body);
+  ProductBot.find({
+    $or: [
+      { name: { $regex: req.body.text, $options: "i" } },
+      { category: { $regex: req.body.text, $options: "i" } },
+    ],
+  }).exec((err, products) => {
+    if (err) {
+      return res.status(400).json({
+        error: "Product not found",
+      });
+    }
+    res.json(products);
+  });
+};
+exports.getAllProductsBot = (req, res) => {
+  let limit = req.query.limit ? parseInt(req.query.limit) : 20;
+  let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+  ProductBot.find()
+    .sort([[sortBy, "asc"]])
+    //.limit(limit)
+    .exec((err, products) => {
+      if (err) {
+        return res.status(400).json({
+          error: "No products found",
+        });
+      }
+      res.json(products);
+    });
+};
+exports.getProductByCategoryBot = (req, res, next, id) => {
+  ProductBot.find({ category: { $regex: id, $options: "i" } }).exec(
+    (err, product) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).json({
+          error: "Product not found",
+        });
+      }
+      req.product = product;
+      next();
+    }
+  );
+};
+exports.getProductsByCateBot = (req, res) => {
+  return res.json(req.product);
 };

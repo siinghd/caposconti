@@ -1,21 +1,21 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
-const productSchema = new mongoose.Schema(
+const productBotSchema = new mongoose.Schema(
   {
-    name: {
+    Title: {
       type: String,
       trim: true,
 
       maxlength: 255,
     },
-    description: {
+    Description: {
       type: String,
       trim: true,
 
       maxlength: 2000,
     },
-    discountprice: {
+    DealPrice: {
       type: Number,
       maxlength: 32,
       trim: true,
@@ -26,13 +26,14 @@ const productSchema = new mongoose.Schema(
       maxlength: 32,
       trim: true,
     },
-    asin: {
+    OffertValue: String,
+    Asin: {
       type: String,
       required: true,
     },
-    amazonLink: String,
-    amazonLinkOur: String,
-
+    Url: String,
+    Rating: String,
+    MerchantInfo: String,
     /*category: [
       {
         type: ObjectId,
@@ -47,11 +48,11 @@ const productSchema = new mongoose.Schema(
         required: true,
       },
     ],*/
-    photo: String,
-    endDateTime: Date,
-    category: String,
+    Image: String,
+    TimeDeal: Date,
+    Category: String,
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports = mongoose.model("ProductBot", productBotSchema);
