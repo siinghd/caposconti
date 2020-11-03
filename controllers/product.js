@@ -271,7 +271,7 @@ exports.addProductsOfBot = (req, res) => {
         console.log(err);
         return res.status(400).json({ err: "error" });
       }
-      res.status(200).json({ done: "done" });
+      res.json({ done: "done" });
     });
   });
 };
