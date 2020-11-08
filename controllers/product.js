@@ -307,6 +307,7 @@ exports.getAllProductsBot = (req, res) => {
     });
 };
 exports.getProductByCategoryBot = (req, res, next, id) => {
+  console.log(id);
   ProductBot.find({ category: { $regex: id, $options: "i" } }).exec(
     (err, product) => {
       if (err) {
