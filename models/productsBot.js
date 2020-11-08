@@ -16,12 +16,12 @@ const productBotSchema = new mongoose.Schema(
       maxlength: 2000,
     },
     DealPrice: {
-      type: Number,
+      type: String,
       maxlength: 32,
       trim: true,
     },
     Price: {
-      type: Number,
+      type: String,
       required: true,
       maxlength: 32,
       trim: true,
