@@ -20,7 +20,7 @@ const productBotSchema = new mongoose.Schema(
       maxlength: 32,
       trim: true,
     },
-    price: {
+    Price: {
       type: Number,
       required: true,
       maxlength: 32,
