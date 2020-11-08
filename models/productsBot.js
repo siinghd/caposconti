@@ -16,7 +16,7 @@ const productBotSchema = new mongoose.Schema(
       maxlength: 2000,
     },
     DealPrice: {
-      type: String,
+      type: Number,
       maxlength: 32,
       trim: true,
     },
@@ -49,7 +49,7 @@ const productBotSchema = new mongoose.Schema(
       },
     ],*/
     Image: String,
-    TimeDeal: String,
+    TimeDeal: Date,
     Category: String,
   },
   { timestamps: true }
