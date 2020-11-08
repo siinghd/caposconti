@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const productRoutes = require("./routes/product");
+const productRoutesBot = require("./routes/productBot");
 const { createProducts } = require("./controllers/product");
 mongoose
   .connect(
@@ -27,6 +28,7 @@ app.use(cors());
 //my routes
 //My Routes
 app.use("/api", productRoutes);
+app.use("/api", productRoutesBot);
 createProducts();
 //PORT
 const port = process.env.PORT || 8000;

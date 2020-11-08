@@ -49,7 +49,7 @@ const productBotSchema = new mongoose.Schema(
       },
     ],*/
     Image: String,
-    TimeDeal: Date,
+    TimeDeal: String,
     Category: String,
   },
   { timestamps: true }
