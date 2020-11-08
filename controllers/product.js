@@ -287,6 +287,7 @@ exports.getSearchedProductsBot = (req, res) => {
         error: "Product not found",
       });
     }
+    console.log(products);
     res.json(products);
   });
 };
